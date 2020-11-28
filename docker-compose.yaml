@@ -1,0 +1,31 @@
+version: '2'
+
+services:
+  server:
+    build: .
+    ports:
+      - 9797:9797
+    networks:
+      - app-network
+
+  mongodb:
+    image: mongo:4.2.6
+    container_name: mongodb-local
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=$MONGO_INITDB_ROOT_USERNAME
+      - MONGO_INITDB_ROOT_PASSWORD=$MONGO_INITDB_ROOT_PASSWORD
+      - MONGO_INITDB_DATABASE=$MONGO_INITDB_DATABASE
+    ports:
+      - 27017:27017
+    volumes:
+      - dbdata:/data/db
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  dbdata:
